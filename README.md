@@ -83,7 +83,7 @@ Follow these steps to launch and set up your **GShareWiFi Voucher Manager**:
    - Your **Webhook URL** (see MacroDroid Setup below to obtain this)
 
 5. **Click “🚀 Run Setup”**  
-   The system will automatically generate a MacroDroid-compatible macro and prepare your WiFi voucher automation.
+   The system will automatically generate a MacroDroid-compatible macro to handle your WiFi voucher automation.
 
 ---
 
