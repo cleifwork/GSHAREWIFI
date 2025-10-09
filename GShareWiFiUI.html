@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>GShareWiFi Voucher Manager</title>
+    <style>
+      body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
+      .container { 
+        max-width: 900px; 
+        margin: 20px auto; 
+        padding: 30px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        background-color: #fff;
+      }
+      h1 { 
+        color: #007BFF; 
+        text-align: center; 
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        font-weight: 700;
+      }
+      .setup-section {
+        background-color: #f1f5f9;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        border: 1px solid #e2e8f0;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #334155;
+      }
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+      }
+      .form-group input[type="text"]:focus {
+        border-color: #007BFF;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+      }
+      .form-group input.invalid {
+        border: 2px solid #ef4444 !important;
+      }
+
+      /* Buttons */
+      .base-btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.2s, transform 0.1s;
+      }
+      .base-btn:hover {
+        transform: translateY(-1px);
+      }
+      .base-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .setup-btn {
+        background-color: #007BFF;
+        color: white;
+      }
+      .setup-btn:hover:not(:disabled) {
+        background-color: #0056b3;
+      }
+      .sync-btn {
+        background-color: #10b981;
+        color: white;
+      }
+      .sync-btn:hover:not(:disabled) {
+        background-color: #059669;
+      }
+      .download-btn {
+        background-color: #007BFF;
+        color: white;
+      }
+      .download-btn:hover:not(:disabled) {
+        background-color: #0056b3;
+      }
+      .view-btn {
+        background-color: #60a5fa;
+        color: white;
+      }
+      .view-btn:hover:not(:disabled) {
+        background-color: #3b82f6;
+      }
+      .danger-btn {
+        background-color: #ef4444;
+        color: white;
+      }
+      .danger-btn:hover:not(:disabled) {
+        background-color: #dc2626;
+      }
+      .clear-all-btn {
+        background-color: #f97316;
+        color: white;
+      }
+      .clear-all-btn:hover:not(:disabled) {
+        background-color: #ea580c;
+      }
+
+      /* File List Table */
+      .file-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .file-table th, .file-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .file-table th {
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .file-table tbody tr:nth-child(even) { background-color: #fafafa; }
+      .file-table tbody tr:hover { background-color: #eff6ff; }
+      .file-name.empty {
+        color: #9ca3af;
+        font-style: italic;
+      }
+
+      /* Status Messages */
+      #status {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        text-align: center;
+        font-weight: 600;
+        z-index: 1000;
+        transition: background-color 0.3s, opacity 0.3s;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .status-info { background-color: #bfdbfe; color: #1e40af; opacity: 1; }
+      .status-success { background-color: #a7f3d0; color: #065f46; opacity: 1; }
+      .status-error { background-color: #fecaca; color: #991b1b; opacity: 1; }
+
+      /* Loader */
+      #loaderOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 2000;
+      }
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Custom Modal */
+      #customModal {
+        display: none;
+        position: fixed;
+        z-index: 3000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background-color: #fff;
+        margin: auto;
+        padding: 25px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #modalMessage {
+        margin-bottom: 20px;
+        max-height: 60vh;
+        overflow-y: auto;
+        color: #333;
+        font-size: 1rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+      .modal-code pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      .modal-buttons {
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      /* Force Update Switch */
+      .switch-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 10px;
+        background: #e0f2f7;
+        border-radius: 6px;
+        border: 1px dashed #7dd3fc;
+        font-size: 0.9rem;
+      }
+      .switch-container p {
+        margin: 0;
+        font-weight: 500;
+        color: #075985;
+      }
+      /* The switch - the box around the slider */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      .voucher-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+      }
+
+      .voucher-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .voucher-actions img {
+        width: 120px;      /* Adjust to fit neatly */
+        height: auto;
+        border-radius: 8px;
+        object-fit: contain;
+      }
+
+      @media (max-width: 600px) {
+        .voucher-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .voucher-actions {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .voucher-actions img {
+          width: 100px;
+        }
+      }      
+
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        .container {
+          margin: 10px;
+          padding: 20px;
+        }
+        .file-table th:nth-child(2), .file-table td:nth-child(2) {
+          display: none; /* Hide ID column on small screens */
+        }
+        .file-table th:nth-child(4), .file-table td:nth-child(4) {
+            text-align: center;
+        }
+        .file-table td {
+          padding: 8px 10px;
+        }
+        .file-table th {
+            font-size: 0.75rem;
+        }
+        .base-btn {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+        .file-table .space-x-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="loaderOverlay">
+      <div class="spinner"></div>
+      <p id="loaderMessage">Loading...</p>
+    </div>
+
+    <div id="customModal">
+      <div class="modal-content">
+        <div id="modalMessage"></div>
+        <div class="modal-buttons">
+          <button id="modalCancelBtn" class="base-btn danger-btn">Cancel</button>
+          <button id="modalOkBtn" class="base-btn setup-btn">OK</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="status"></div>
+
+    <div class="container">
+      <h1 id="appTitle">GShareWiFi Voucher Manager</h1>
+
+      <!-- Setup Section -->
+      <div class="setup-section">
+        <h2 style="font-size:1.4rem; color:#334155; margin-top:0;">Setup Configuration</h2>
+        <div class="form-group">
+          <label for="gmail">Your GMail:</label>
+          <input type="text" id="gmail" value="[ Will be filled automatically ]">
+        </div>
+        <div class="form-group">
+          <label for="businessName">Business Name:</label>
+          <input type="text" id="businessName" placeholder="E.g., GShare WiFi Hub">
+        </div>
+        <div class="form-group">
+          <label for="amounts">Voucher Amounts (comma-separated):</label>
+          <input type="text" id="amounts" placeholder="E.g., 5, 10, 20">
+        </div>
+        <small style="font-size: 12px; color: #666;">
+            Download this <b>MacroDroid macro</b> to get your Webhook URL. 
+            You will need the 
+            <a href="https://play.google.com/store/apps/details?id=com.arlosoft.macrodroid" target="_blank" style="color:#007BFF; text-decoration:none;">
+              MacroDroid app
+            </a> 
+            to import and run it.
+        </small>
+        <a id="macroLink" 
+            href="https://drive.google.com/uc?export=download&id=1FAStvWrxUIgeYfCOAXU2gJgJ_i5lidSA"
+            target="_blank" 
+            style="display:inline-block; width:100%; padding:8px; margin-bottom:10px; color:#007BFF; text-decoration:underline;">
+            Download Macro (Webhook URL Identifier)
+        </a><br>
+        <div class="form-group">
+          <label for="webhookUrl">MacroDroid Webhook URL:</label>
+          <input type="text" id="webhookUrl" placeholder="Must end with /sync_vouchers">
+        </div>
+
+        <div class="switch-container">
+          <p>
+            Force Template Update (Delete old folder and copy new template)
+            <span style="display:block; font-size:0.75rem; font-weight:400; color:#075985;">Turn this ON to update macro template or fix missing files.</span>
+          </p>
+          <label class="switch">
+            <input type="checkbox" id="forceMacroUpdate">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+          <button id="runSetupBtn" class="base-btn setup-btn" onclick="handleSetup()">
+            <span style="font-size: 1.1em;">🚀 Run Setup</span>
+          </button>
+          <button class="base-btn sync-btn" onclick="forceSyncVouchers()">
+            Manual Sync Vouchers
+          </button>
+        </div>
+      </div>
+
+      <!-- File List Section
+      <h2 style="font-size:1.4rem; color:#334155; margin-top:25px;">Voucher Files in Google Drive</h2>
+      <div style="text-align:right;">
+        <button id="clearAllBtn" class="base-btn clear-all-btn" onclick="handleClearAllFiles()" style="display:none;">
+          Clear All Voucher Vouchers
+        </button>
+      </div>  -->
+
+      <div class="voucher-header">
+        <h2 style="font-size:1.4rem; color:#334155; margin:0;">Voucher Files in Google Drive</h2>
+
+        <div class="voucher-actions">
+          <button id="clearAllBtn" class="base-btn clear-all-btn" onclick="handleClearAllFiles()" style="display:none;">
+            Clear All Voucher Vouchers
+          </button>
+          <img 
+            src="https://drive.google.com/uc?export=view&id=1-T2z6WOQYV5SQLYhuUSvYUj3mmvjTiz0" 
+            alt="GConnect Logo"
+          >
+        </div>
+      </div>
+      
+      <div id="fileListContainer" style="display:none;">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">File Name</th>
+              <th class="hidden sm:table-cell" style="width: 45%;">File ID</th>
+              <th style="width: 10%; text-align: center;">Voucher Count</th>
+              <th style="width: 20%; text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="fileList">
+            <!-- File rows will be injected here -->
+          </tbody>
+        </table>
+      </div>
+      <div id="fileListEmptyMessage">
+        <p class="text-center py-4 text-gray-500">Loading files...</p>
+      </div>
+    </div>
+    
+    <div class="footer" style="text-align:center; margin-top:30px; font-size:14px; color:#666;">
+      <p>
+        This solution is brought to you by <b>GConnect Solutions Inc.</b><br>
+        &copy; 2025 GConnect Solutions Inc. All rights reserved.
+      </p>
+      <p>
+        Follow us: 
+        <a href="https://www.facebook.com/groups/1776872022780742" target="_blank" style="margin:0 10px; color:#007BFF;">Facebook</a> | 
+        <a href="https://www.youtube.com/channel/UC9O3ezuyjS7C6V7-ZAHCQrA" target="_blank" style="margin:0 10px; color:#FF0000;">YouTube</a>
+      </p>
+    </div>
+
+    <script>
+        // --- Loader / Status ---
+        let loaderVisible = false;
+        let globalBusinessName = ''; // Global variable for use in messages
+        
+        function showLoader(message = 'Loading...') {
+          document.getElementById('loaderMessage').textContent = message;
+          document.getElementById('loaderOverlay').style.display = 'flex';
+          loaderVisible = true;
+          displayStatus(message, 'info', true);
+        }
+
+        function hideLoader(message = '', type = 'info') {
+          document.getElementById('loaderOverlay').style.display = 'none';
+          loaderVisible = false;
+          if (message) {
+            displayStatus(message, type);
+          } else {
+            displayStatus('', '');
+          }
+        }
+
+        function displayStatus(message, type = 'info', persist = false) {
+          const statusDiv = document.getElementById('status');
+          // Clear existing class before setting a new one to prevent stacking
+          statusDiv.className = ''; 
+          if (message) {
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-' + type;
+            if (!persist) {
+              setTimeout(() => {
+                statusDiv.textContent = '';
+                statusDiv.className = '';
+              }, 5000);
+            }
+          } else {
+             statusDiv.textContent = '';
+          }
+        }
+
+        // --- Custom Modal ---
+        function showCustomConfirm(message, showCancel = true) {
+          return new Promise((resolve, reject) => {
+            const modal = document.getElementById('customModal');
+            const messageDiv = document.getElementById('modalMessage');
+            const okBtn = document.getElementById('modalOkBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+
+            // Reset classes
+            messageDiv.className = "";
+            messageDiv.innerHTML = message;
+            messageDiv.scrollTop = 0;
+            cancelBtn.style.display = showCancel ? 'inline-block' : 'none';
+            modal.style.display = 'flex';
+
+            const onOk = () => { cleanup(); resolve(); };
+            const onCancel = () => { cleanup(); reject(); };
+            const cleanup = () => {
+              modal.style.display = 'none';
+              // Ensure listeners are removed to prevent multiple triggers
+              okBtn.removeEventListener('click', onOk);
+              cancelBtn.removeEventListener('click', onCancel);
+              hideLoader();
+            };
+
+            okBtn.addEventListener('click', onOk);
+            cancelBtn.addEventListener('click', onCancel);
+          });
+        }
+
+        // --- Load Voucher Files ---
+        function loadVoucherFiles() {
+          showLoader('Loading files...');
+          google.script.run
+            .withSuccessHandler(files => {
+              const fileListBody = document.getElementById('fileList');
+              const fileListContainer = document.getElementById('fileListContainer');
+              fileListBody.innerHTML = '';
+              
+              const voucherFiles = files.filter(f => f.isVoucher);
+
+              if (!voucherFiles || voucherFiles.length === 0) {
+                fileListContainer.style.display = 'none';
+                document.getElementById('fileListEmptyMessage').innerHTML =
+                  `<p class="text-center py-4 text-gray-500">No voucher files found...</p>`;
+                hideLoader('No files found.', 'info');
+                document.getElementById('clearAllBtn').style.display = 'none';
+                return;
+              }
+              document.getElementById('fileListEmptyMessage').innerHTML = ''; // Clear message if files found
+              fileListContainer.style.display = 'block';
+              document.getElementById('clearAllBtn').style.display = 'block';
+
+              // Sort: Vouchers first (by amount), Macro last
+              files.sort((a, b) => {
+                // Always keep macro file last
+                if (a.isMacro && !b.isMacro) return 1;
+                if (!a.isMacro && b.isMacro) return -1;
+
+                // Extract numeric values (e.g., 5 from "5php_vouchers.txt")
+                const numA = parseInt(a.name.match(/(\d+)\s*php/i)?.[1] || 0);
+                const numB = parseInt(b.name.match(/(\d+)\s*php/i)?.[1] || 0);
+
+                return numA - numB;
+              });
+
+              const fragment = document.createDocumentFragment();
+              files.forEach(file => {
+                const itemRow = document.createElement('tr');
+
+                // --- Name column ---
+                const nameCell = document.createElement('td');
+                nameCell.className = "px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900";
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'file-name';
+                nameSpan.textContent = file.name;
+                if (file.isVoucher && file.count === 0) nameSpan.classList.add('empty');
+                nameCell.appendChild(nameSpan);
+
+                // --- ID column ---
+                const idCell = document.createElement('td');
+                idCell.className = "px-4 py-3 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell";
+                idCell.textContent = file.id;
+
+                // --- Count column ---
+                const countCell = document.createElement('td');
+                countCell.className = "px-4 py-3 whitespace-nowrap text-sm font-semibold";
+                countCell.style.textAlign = 'center';
+                if (file.isMacro) {
+                    countCell.textContent = 'N/A';
+                    countCell.style.color = '#888';
+                } else {
+                    countCell.textContent = file.count;
+                    countCell.style.color = file.count === 0 ? '#9ca3af' : '#3B82F6';
+                }
+
+                // --- Actions column ---
+                const actionsCell = document.createElement('td');
+                actionsCell.className = "px-4 py-3 whitespace-nowrap text-right text-sm font-medium space-x-2";
+
+                if (file.isMacro) {
+                    // DOWNLOAD BUTTON for macro file
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'base-btn download-btn';
+                    downloadBtn.textContent = 'Download';
+                    downloadBtn.onclick = () => handleDownloadMacro(file.id);
+                    actionsCell.appendChild(downloadBtn);
+                } else if (file.isVoucher) {
+                    // VIEW BUTTON
+                    const viewBtn = document.createElement('button');
+                    viewBtn.className = 'base-btn view-btn';
+                    viewBtn.textContent = 'View';
+                    viewBtn.onclick = () => handleViewFile(file.name);
+                    actionsCell.appendChild(viewBtn);
+
+                    // CLEAR BUTTON
+                    if (file.count > 0) {
+                      const clearBtn = document.createElement('button');
+                      clearBtn.className = 'base-btn danger-btn clear-btn';
+                      clearBtn.textContent = 'Clear';
+                      clearBtn.onclick = () => handleClearSpecificFile(file.name);
+                      actionsCell.appendChild(clearBtn);
+                    }
+                }
+
+                itemRow.appendChild(nameCell);
+                itemRow.appendChild(idCell);
+                itemRow.appendChild(countCell);
+                itemRow.appendChild(actionsCell);
+                fragment.appendChild(itemRow);
+              });
+
+              fileListBody.appendChild(fragment);
+              hideLoader('Voucher files loaded.', 'success');
+            })
+            .withFailureHandler(error => {
+              console.error('Error loading files:', error);
+              hideLoader('Error loading files: ' + error.message, 'error');
+            })
+            .listVoucherFiles();
+        }
+
+        // --- File Actions ---
+        async function handleViewFile(fileName) {
+          // 1. Get the business name from the input field
+          const businessNameInput = document.getElementById("businessName");
+          const businessName = businessNameInput ? businessNameInput.value.trim() : null;
+          
+          // Basic validation before the server call
+          if (!businessName) {
+            await showCustomConfirm('Error: Please enter your **Business Name** in the Setup tab first.', false);
+            return;
+          }
+
+          showLoader('Loading ' + fileName + '...');
+          google.script.run
+            .withSuccessHandler(content => {
+                hideLoader();
+                const fullContent = content || '(This file is empty)';
+                const lines = fullContent.split('\n');
+                // Limiting display for performance and modal size
+                const maxLines = 100; 
+
+                let displayedContent = lines.length > maxLines 
+                  ? lines.slice(0, maxLines).join('\n') + '\n... (truncated)'
+                  : fullContent;
+                
+                showCustomConfirm(
+                  `<b>${fileName}:</b><br><br><pre id="modalPre">${displayedContent}</pre>`,
+                  false
+                );
+                document.getElementById('modalMessage').classList.add('modal-code');
+            })
+            .withFailureHandler(async error => {
+              // In case of failure, hide the loader and show the error
+              hideLoader(); 
+              await showCustomConfirm('Error reading file: ' + error.message, false);
+            })
+            // 2. CRITICAL FIX: Pass the businessName as the second argument
+            .getVoucherFileContent(fileName, businessName); 
+        }
+
+        async function handleDownloadMacro(fileId) {
+            showLoader('Preparing macro download...');
+            
+            google.script.run
+                .withSuccessHandler(downloadUrl => {
+                    hideLoader();
+                    if (downloadUrl) {
+                        window.open(downloadUrl, '_blank');
+                        displayStatus('Macro download initiated. Check your downloads folder.', 'success', false);
+                    } else {
+                        displayStatus('Download URL was not returned by the server.', 'error', false);
+                    }
+                })
+                .withFailureHandler(async error => {
+                    hideLoader('Error downloading macro file: ' + error.message, 'error');
+                    await showCustomConfirm('Error retrieving download link: ' + error.message, false);
+                })
+                .getMacroDownloadUrl(fileId); 
+        }
+        
+        async function handleClearSpecificFile(fileName) {
+          try {
+            await showCustomConfirm(`Are you sure you want to clear the file: <b>${fileName}</b>?`);
+            showLoader('Clearing ' + fileName + '...');
+
+            google.script.run
+              .withSuccessHandler(response => {
+                // Show success/failure first
+                hideLoader(
+                  response,
+                  response.toLowerCase().startsWith('error') ? 'error' : 'success'
+                );
+                // Then reload files immediately
+                loadVoucherFiles();
+              })
+              .withFailureHandler(error => {
+                hideLoader('Error clearing file ' + fileName + ': ' + error.message, 'error');
+              })
+              .clearSpecificVoucherFile(fileName);
+          } catch {
+            console.log('Clear file cancelled.');
+          }
+        }
+
+        async function handleClearAllFiles() {
+          try {
+            await showCustomConfirm(
+              'Are you sure you want to clear <b>ALL</b> voucher files? This cannot be undone.'
+            );
+            showLoader('Clearing all voucher files...');
+
+            google.script.run
+              .withSuccessHandler(response => {
+                hideLoader(
+                  response,
+                  response.toLowerCase().startsWith('error') ? 'error' : 'success'
+                );
+                loadVoucherFiles();
+              })
+              .withFailureHandler(error => {
+                hideLoader('Error clearing all files: ' + error.message, 'error');
+              })
+              .clearAllVoucherFiles();
+          } catch {
+            console.log('Clear all files cancelled.');
+          }
+        }
+
+        // --- Setup ---
+        async function handleSetup() {
+          const gmail = document.getElementById('gmail').value.trim();
+          const businessName = document.getElementById('businessName').value.trim();
+          const amountsStr = document.getElementById('amounts').value.trim();
+          const webhookInput = document.getElementById('webhookUrl');
+          const webhookUrl = webhookInput.value.trim();
+          const forceMacroUpdate = document.getElementById('forceMacroUpdate').checked; 
+          
+          // Validation logic for webhook URL
+          const urlValid = /^(https:\/\/trigger\.macrodroid\.com\/|https:\/\/tinyurl\.com\/).+\/sync_vouchers$/.test(webhookUrl);
+
+          if (!gmail || !businessName || !amountsStr || !webhookUrl) {
+            checkSetupFields();
+            return showCustomConfirm("Please fill in all setup fields.", false);
+          }
+
+          if (!urlValid) {
+            checkSetupFields();
+            return showCustomConfirm("Please enter a valid Webhook URL that ends with '/sync_vouchers'.", false);
+          }
+
+          let amounts = amountsStr
+            .split(",")
+            .map(a => parseInt(a.trim(), 10))
+            .filter(n => !isNaN(n) && n > 0);
+
+          amounts = [...new Set(amounts)].sort((a, b) => a - b);
+
+          if (amounts.length === 0) {
+            checkSetupFields();
+            return showCustomConfirm("Enter valid voucher amounts greater than 0.", false);
+          }
+          if (amounts.length > 9) {
+            checkSetupFields();
+            return showCustomConfirm("You can only set up to 9 unique voucher amounts.", false);
+          }
+          checkSetupFields(); // Ensure final visual validation is run
+
+          try {
+            await showCustomConfirm(`
+              <b>Gmail:</b> ${gmail}<br>
+              <b>Business Name:</b> ${businessName}<br>
+              <b>Voucher Amounts:</b> ${amounts.join(", ")}<br>
+              <b>Webhook URL:</b> ${webhookUrl}<br>
+              <b>Force Template Update:</b> ${forceMacroUpdate ? 'Yes (Old folder will be deleted)' : 'No (Skip copy if folder exists)'}<br><br>
+              Proceed?
+            `);
+
+            showLoader("Running setup...");
+
+            google.script.run
+              .withSuccessHandler(async res => {
+                hideLoader();
+
+                const message = (typeof res === 'object' && res.message) ? res.message : String(res);
+                const updateSwitch = document.getElementById('forceMacroUpdate');
+                const keepSwitchOn = res && typeof res.keepSwitchOn !== "undefined" ? res.keepSwitchOn : false;
+
+                // 🔍 Debugging info
+                console.log("Setup result:", res);
+
+                if (updateSwitch) {
+                  if (keepSwitchOn) {
+                    // ⚠️ Something failed (macro/copy/etc.) — keep switch ON
+                    updateSwitch.checked = true;
+                    google.script.run
+                      .withFailureHandler(err => console.error("Error keeping switch ON:", err))
+                      .saveForceUpdateSwitchState(true);
+                  } else {
+                    // ✅ Everything succeeded — turn switch OFF
+                    updateSwitch.checked = false;
+                    google.script.run
+                      .withFailureHandler(err => console.error("Error resetting switch state:", err))
+                      .saveForceUpdateSwitchState(false);
+                  }
+                }
+
+                await showCustomConfirm(message, false);
+
+                if (res.success && !keepSwitchOn) {
+                  // Only reload data if the operation fully succeeded
+                  google.script.run.withSuccessHandler(data => {
+                    globalBusinessName = data.businessName || ''; 
+                    document.getElementById("businessName").value = data.businessName;
+                    document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+                    loadVoucherFiles();
+                    checkSetupFields();
+                  }).getInitialData();
+                }
+              })
+              .withFailureHandler(async err => {
+                hideLoader();
+                await showCustomConfirm("Error during setup:<br>" + err.message, false);
+              })
+              .setupGShareWiFi_andGenerateMacro(businessName, amounts, webhookUrl, forceMacroUpdate);
+
+          } catch {
+            console.log('Setup cancelled.');
+          }
+        }
+
+        // --- To Manually Trigger Voucher Sync ---
+        async function forceSyncVouchers() {
+          try {
+            await showCustomConfirm('Are you sure you want to manually trigger the voucher sync now?');
+            showLoader("Forcing voucher sync...");
+            google.script.run
+              .withSuccessHandler((res) => {
+                hideLoader("Voucher sync complete.", "success");
+                loadVoucherFiles(); // refresh immediately
+              })
+              .withFailureHandler((err) => {
+                hideLoader("Voucher sync failed: " + err.message, "error");
+              })
+              .processNewRechargeEmails();
+          } catch {
+            console.log("Force sync cancelled.");
+          }
+        }
+
+        // --- Initialize Page ---
+        window.onload = function() {
+          google.script.run.withSuccessHandler(data => {
+            // 1. Set Global Business Name (for loadVoucherFiles)
+            globalBusinessName = data.businessName || ''; 
+
+            // 2. Populate fields
+            if (data.email) document.getElementById('gmail').value = data.email;
+            if (data.businessName) {
+              document.getElementById("businessName").value = data.businessName;
+              document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+            }
+            if (data.webhookUrl) document.getElementById("webhookUrl").value = data.webhookUrl; 
+            if (data.amounts) document.getElementById("amounts").value = data.amounts;
+
+            // --- CRITICAL FIX: Load switch state on page load ---
+            if (data.forceMacroUpdate !== undefined) {
+                document.getElementById('forceMacroUpdate').checked = data.forceMacroUpdate;
+            }
+            // ---------------------------------------------------
+
+            // 3. Load files after necessary setup is done
+            loadVoucherFiles();
+            
+            // 4. Update button state
+            checkSetupFields();
+          }).getInitialData();
+        };
+
+        function checkSetupFields() {
+          const gmailInput = document.getElementById("gmail");
+          const businessNameInput = document.getElementById("businessName");
+          const amountsInput = document.getElementById("amounts");
+          const webhookInput = document.getElementById("webhookUrl");
+          const runSetupBtn = document.getElementById("runSetupBtn");
+
+          const gmail = gmailInput.value.trim();
+          const businessName = businessNameInput.value.trim();
+          const amounts = amountsInput.value.trim();
+          const webhookUrl = webhookInput.value.trim();
+
+          const urlValid = /^(https:\/\/trigger\.macrodroid\.com\/|https:\/\/tinyurl\.com\/).+\/sync_vouchers$/.test(webhookUrl);
+
+          const amountsValid = amounts.split(',').map(a => parseInt(a.trim(), 10)).filter(n => !isNaN(n) && n > 0).length > 0;
+
+          // Helper to set border style
+          const setBorderStyle = (input, isValid) => {
+              if (!input) return;
+              if (!isValid) {
+                  input.classList.add('invalid');
+              } else {
+                  input.classList.remove('invalid');
+              }
+          };
+
+          setBorderStyle(gmailInput, !!gmail);
+          setBorderStyle(businessNameInput, !!businessName);
+          setBorderStyle(amountsInput, !!amounts && amountsValid);
+          setBorderStyle(webhookInput, !!webhookUrl && urlValid);
+
+          // Enable/disable button: requires all fields to be non-empty and webhook/amounts to be valid
+          runSetupBtn.disabled = !(gmail && businessName && amounts && urlValid && amountsValid);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          // Add event listeners for instant validation feedback
+          document.getElementById("gmail")?.addEventListener("input", checkSetupFields);
+          document.getElementById("businessName")?.addEventListener("input", checkSetupFields);
+          document.getElementById("amounts")?.addEventListener("input", checkSetupFields);
+          document.getElementById("webhookUrl")?.addEventListener("input", checkSetupFields);
+        });
+
+      </script>
+  </body>
+</html>
