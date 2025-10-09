@@ -27,6 +27,7 @@ When integrated with **GCash** or **Maya push notifications**, MacroDroid detect
 | ⚙️ **Macro Generator** | Creates a ready-to-import `.macro` file for MacroDroid automation. |
 | 🔗 **Webhook Integration** | Keeps MacroDroid updated with the latest voucher list. |
 | 💳 **Payment Automation** | Works with GCash or Maya push notifications to issue vouchers automatically. |
+| 📩 **MacroDroid Email Sync** | Tracks MacroDroid email confirmations and removes used vouchers from Drive files. |
 | 🔄 **Sync & Maintenance** | “Force Update” option to rebuild or fix missing files. |
 | 📱 **Responsive UI** | Optimized for both desktop and mobile GAS interfaces. |
 | 🧾 **User Access Control** | Access limited through registered Gmail accounts. |
