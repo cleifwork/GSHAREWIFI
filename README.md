@@ -1,6 +1,6 @@
 # 🛰️ GShareWiFi Utility App
 
-**GShareWiFi Utility App - GWUA** is a **Google Apps Script (GAS)** web application that automates the creation, synchronization, and issuance of **WiFi vouchers** using **MacroDroid** automation on Android.
+**GShareWiFi Utility App - GUA** is a **Google Apps Script (GAS)** web application that automates the creation, synchronization, and issuance of **WiFi vouchers** using **MacroDroid** automation on Android.
 
 It connects your **Gmail**, **Google Drive**, and **MacroDroid** workflows — allowing you to issue WiFi access vouchers automatically when customers send payments via **GCash** or **Maya**.
 
