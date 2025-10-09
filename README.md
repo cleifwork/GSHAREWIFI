@@ -133,7 +133,7 @@ With this setup, your WiFi vending system runs **fully automated**, 24/7 — no 
 
 Watch how **GShareWiFi** automates voucher creation and SMS delivery in action:  
 
-[![Watch the demo](https://raw.githubusercontent.com/cleifwork/GSHAREWIFI/main/assets/img/gsharewifi_logo.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Watch the demo](https://raw.githubusercontent.com/cleifwork/GSHAREWIFI/main/assets/img/gsharewifi_play.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
 > 🎬 Click the image above or [watch directly on YouTube](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
