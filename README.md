@@ -126,7 +126,6 @@ With this setup, your WiFi vending system runs **fully automated**, 24/7 — no 
 - **Google Drive & Gmail Services**
 - **HTML, CSS, Vanilla JS (Frontend)**
 - **MacroDroid (Android Automation)**
-- **Google Sheets (User Access Control)**
 
 ---
 
