@@ -1,4 +1,4 @@
-# 🛰️ GShareWiFi App
+# 🛰️ GShareWiFi Utility App
 
 **GShareWiFi** is a **Google Apps Script (GAS)** web application that automates the creation, synchronization, and issuance of **WiFi vouchers** using **MacroDroid** automation on Android.
 
