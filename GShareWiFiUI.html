@@ -2,9 +2,16 @@
 <html>
   <head>
     <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GShareWiFi Voucher Manager</title>
     <style>
-      body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        background-color: #f8fafc;
+        color: #1e293b;
+      }
+
       .container { 
         max-width: 900px; 
         margin: 20px auto; 
@@ -13,6 +20,7 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
         background-color: #fff;
       }
+
       h1 { 
         color: #007BFF; 
         text-align: center; 
@@ -20,6 +28,7 @@
         margin-bottom: 25px;
         font-weight: 700;
       }
+
       .setup-section {
         background-color: #f1f5f9;
         padding: 20px;
@@ -27,15 +36,18 @@
         margin-bottom: 25px;
         border: 1px solid #e2e8f0;
       }
+
       .form-group {
         margin-bottom: 15px;
       }
+
       .form-group label {
         display: block;
         font-weight: 600;
         margin-bottom: 5px;
         color: #334155;
       }
+
       .form-group input[type="text"] {
         width: 100%;
         padding: 10px;
@@ -44,13 +56,28 @@
         box-sizing: border-box;
         transition: border-color 0.2s;
       }
+
       .form-group input[type="text"]:focus {
         border-color: #007BFF;
         outline: none;
         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
       }
+
       .form-group input.invalid {
         border: 2px solid #ef4444 !important;
+      }
+
+      .info-box {
+        background: #f9fafb;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin: 15px 0;
+      }
+
+      #macroLink:hover {
+        text-decoration: underline !important;
+        color: #0056b3 !important;
       }
 
       /* Buttons */
@@ -62,9 +89,11 @@
         font-weight: 600;
         transition: background-color 0.2s, transform 0.1s;
       }
+
       .base-btn:hover {
         transform: translateY(-1px);
       }
+
       .base-btn:disabled {
         opacity: 0.6;
         cursor: not-allowed;
@@ -78,6 +107,7 @@
       .setup-btn:hover:not(:disabled) {
         background-color: #0056b3;
       }
+
       .sync-btn {
         background-color: #10b981;
         color: white;
@@ -85,6 +115,7 @@
       .sync-btn:hover:not(:disabled) {
         background-color: #059669;
       }
+
       .download-btn {
         background-color: #007BFF;
         color: white;
@@ -92,6 +123,7 @@
       .download-btn:hover:not(:disabled) {
         background-color: #0056b3;
       }
+
       .view-btn {
         background-color: #60a5fa;
         color: white;
@@ -99,6 +131,7 @@
       .view-btn:hover:not(:disabled) {
         background-color: #3b82f6;
       }
+
       .danger-btn {
         background-color: #ef4444;
         color: white;
@@ -106,6 +139,7 @@
       .danger-btn:hover:not(:disabled) {
         background-color: #dc2626;
       }
+
       .clear-all-btn {
         background-color: #f97316;
         color: white;
@@ -123,17 +157,20 @@
         border-radius: 8px;
         overflow: hidden;
       }
+
       .file-table th, .file-table td {
         padding: 12px 15px;
         text-align: left;
         border-bottom: 1px solid #e2e8f0;
       }
+
       .file-table th {
         background-color: #f1f5f9;
         color: #475569;
         font-weight: 700;
         text-transform: uppercase;
       }
+
       .file-table tbody tr:nth-child(even) { background-color: #fafafa; }
       .file-table tbody tr:hover { background-color: #eff6ff; }
       .file-name.empty {
@@ -155,6 +192,7 @@
         opacity: 0;
         pointer-events: none;
       }
+
       .status-info { background-color: #bfdbfe; color: #1e40af; opacity: 1; }
       .status-success { background-color: #a7f3d0; color: #065f46; opacity: 1; }
       .status-error { background-color: #fecaca; color: #991b1b; opacity: 1; }
@@ -168,12 +206,13 @@
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
         color: white;
-        display: none; /* Hidden by default */
+        display: none;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         z-index: 2000;
       }
+
       .spinner {
         border: 4px solid rgba(255, 255, 255, 0.3);
         border-top: 4px solid #fff;
@@ -183,6 +222,7 @@
         animation: spin 1s linear infinite;
         margin-bottom: 15px;
       }
+
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -202,6 +242,7 @@
         justify-content: center;
         align-items: center;
       }
+
       .modal-content {
         background-color: #fff;
         margin: auto;
@@ -214,6 +255,7 @@
         display: flex;
         flex-direction: column;
       }
+
       #modalMessage {
         margin-bottom: 20px;
         max-height: 60vh;
@@ -223,15 +265,7 @@
         line-height: 1.5;
         white-space: pre-wrap;
       }
-      .modal-code pre {
-        background-color: #f4f4f4;
-        padding: 10px;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 0.85rem;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-      }
+
       .modal-buttons {
         text-align: right;
         display: flex;
@@ -239,7 +273,7 @@
         gap: 10px;
       }
 
-      /* Force Update Switch */
+      /* Switch Container */
       .switch-container {
         display: flex;
         align-items: center;
@@ -251,12 +285,13 @@
         border: 1px dashed #7dd3fc;
         font-size: 0.9rem;
       }
+
       .switch-container p {
         margin: 0;
         font-weight: 500;
         color: #075985;
       }
-      /* The switch - the box around the slider */
+
       .switch {
         position: relative;
         display: inline-block;
@@ -264,14 +299,12 @@
         height: 20px;
       }
 
-      /* Hide default HTML checkbox */
       .switch input {
         opacity: 0;
         width: 0;
         height: 0;
       }
 
-      /* The slider */
       .slider {
         position: absolute;
         cursor: pointer;
@@ -300,77 +333,101 @@
         background-color: #2196F3;
       }
 
-      input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
-      }
-
       input:checked + .slider:before {
         transform: translateX(20px);
       }
 
+      /* Voucher Header */
       .voucher-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         margin-top: 25px;
       }
 
-      .voucher-actions {
+      .voucher-left {
         display: flex;
-        align-items: center;
-        gap: 15px;
+        flex-direction: column;
+        gap: 14px;
       }
 
-      .voucher-actions img {
-        width: 120px;      /* Adjust to fit neatly */
-        height: auto;
+      .voucher-left h2 {
+        font-size: 1.4rem;
+        color: #334155;
+        margin: 0 0 2px 0;
+        line-height: 1.2;
+      }
+
+      .voucher-right img {
+        width: 120px;
         border-radius: 8px;
         object-fit: contain;
       }
 
-      @media (max-width: 600px) {
+      /* ✅ MOBILE RESPONSIVE ADDITIONS */
+      @media (max-width: 768px) {
+        body {
+          margin: 10px;
+          font-size: 15px;
+        }
+
+        .container {
+          padding: 20px;
+        }
+
+        h1 { font-size: 1.4rem; }
+        h2 { font-size: 1.2rem; }
+
+        input, button {
+          width: 100%;
+          font-size: 15px;
+          padding: 10px;
+        }
+
+        .setup-section {
+          padding: 15px;
+        }
+
+        /* Make buttons stack vertically */
+        .setup-section button {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        /* Make table scrollable */
+        .file-table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+          font-size: 13px;
+        }
+
+        .file-table th, .file-table td {
+          padding: 8px 10px;
+        }
+
         .voucher-header {
           flex-direction: column;
           align-items: flex-start;
           gap: 10px;
         }
-        .voucher-actions {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .voucher-actions img {
-          width: 100px;
-        }
-      }      
 
-      /* Responsive adjustments */
-      @media (max-width: 600px) {
-        .container {
-          margin: 10px;
-          padding: 20px;
+        .voucher-right img {
+          width: 100px;
+          margin-top: 10px;
         }
-        .file-table th:nth-child(2), .file-table td:nth-child(2) {
-          display: none; /* Hide ID column on small screens */
+
+        .footer {
+          text-align: center;
+          font-size: 12px;
+          margin-top: 20px;
         }
-        .file-table th:nth-child(4), .file-table td:nth-child(4) {
-            text-align: center;
-        }
-        .file-table td {
-          padding: 8px 10px;
-        }
-        .file-table th {
-            font-size: 0.75rem;
-        }
-        .base-btn {
-            padding: 6px 10px;
-            font-size: 0.75rem;
-        }
-        .file-table .space-x-2 {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            align-items: center;
-        }
+      }
+
+      @media (max-width: 480px) {
+        h1 { font-size: 1.2rem; }
+        h2 { font-size: 1.1rem; }
+        button { font-size: 14px; }
       }
     </style>
   </head>
@@ -411,20 +468,34 @@
           <label for="amounts">Voucher Amounts (comma-separated):</label>
           <input type="text" id="amounts" placeholder="E.g., 5, 10, 20">
         </div>
-        <small style="font-size: 12px; color: #666;">
-            Download this <b>MacroDroid macro</b> to get your Webhook URL. 
-            You will need the 
-            <a href="https://play.google.com/store/apps/details?id=com.arlosoft.macrodroid" target="_blank" style="color:#007BFF; text-decoration:none;">
+
+        <div class="info-box" style="background:#f9fafb; border:1px solid #e2e8f0; border-radius:8px; padding:10px 15px; margin:15px 0;">
+          <small style="font-size: 12.5px; color: #475569;">
+            To generate your Webhook URL.
+            You’ll need the 
+            <a href="https://play.google.com/store/apps/details?id=com.arlosoft.macrodroid" 
+              target="_blank" 
+              style="color:#007BFF; text-decoration:none; font-size:inherit;">
               MacroDroid app
             </a> 
             to import and run it.
-        </small>
-        <a id="macroLink" 
+          </small><br/>
+
+          <a id="macroLink" 
             href="https://drive.google.com/uc?export=download&id=1FAStvWrxUIgeYfCOAXU2gJgJ_i5lidSA"
             target="_blank" 
-            style="display:inline-block; width:100%; padding:8px; margin-bottom:10px; color:#007BFF; text-decoration:underline;">
-            Download Macro (Webhook URL Identifier)
-        </a><br>
+            style="
+              display:inline-block; 
+              margin-top:10px; 
+              color:#007BFF; 
+              font-size:13px; 
+              font-weight:600; 
+              text-decoration:none;
+              transition:color 0.2s, text-decoration 0.2s;">
+            ⬇️ <b>Download Macro (Webhook URL Identifier)</b>
+          </a>
+        </div>
+
         <div class="form-group">
           <label for="webhookUrl">MacroDroid Webhook URL:</label>
           <input type="text" id="webhookUrl" placeholder="Must end with /sync_vouchers">
@@ -460,15 +531,16 @@
       </div>  -->
 
       <div class="voucher-header">
-        <h2 style="font-size:1.4rem; color:#334155; margin:0;">Voucher Files in Google Drive</h2>
-
-        <div class="voucher-actions">
+        <div class="voucher-left">
+          <h2>Voucher Files in Google Drive</h2>
           <button id="clearAllBtn" class="base-btn clear-all-btn" onclick="handleClearAllFiles()" style="display:none;">
             Clear All Voucher Vouchers
           </button>
+        </div>
+        <div class="voucher-right">
           <img 
-            src="https://drive.google.com/uc?export=view&id=1-T2z6WOQYV5SQLYhuUSvYUj3mmvjTiz0" 
-            alt="GConnect Logo"
+            src="https://raw.githubusercontent.com/cleifwork/GSHAREWIFI/gsharewifi-img-assets-1/gsharewifi_logo.png" 
+            alt="GShareWiFi Logo"
           >
         </div>
       </div>
@@ -495,8 +567,7 @@
     
     <div class="footer" style="text-align:center; margin-top:30px; font-size:14px; color:#666;">
       <p>
-        This solution is brought to you by <b>GConnect Solutions Inc.</b><br>
-        &copy; 2025 GConnect Solutions Inc. All rights reserved.
+        &copy; 2025 <b>GConnect Solutions Inc.</b> - All rights reserved.
       </p>
       <p>
         Follow us: 
