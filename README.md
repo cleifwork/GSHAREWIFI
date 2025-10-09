@@ -1,4 +1,4 @@
-# 🛰️ GShareWiFi Utility App
+# 🛰️ GShareWiFi App
 
 **GShareWiFi Utility App - GUA** is a **Google Apps Script (GAS)** web application that automates the creation, synchronization, and issuance of **WiFi vouchers** using **MacroDroid** automation on Android.
 
@@ -8,7 +8,7 @@ It connects your **Gmail**, **Google Drive**, and **MacroDroid** workflows — a
 
 ## 🚀 Overview
 
-Once set up, GShareWiFi can:
+Once set up, GShareWiFi App can:
 - Read new **“Recharge Card”** emails from your provider.  
 - Extract voucher codes and group them by amount (₱5, ₱10, ₱20, etc.).  
 - Store them in Google Drive as text files.  
