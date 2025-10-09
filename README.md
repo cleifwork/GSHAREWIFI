@@ -61,17 +61,34 @@ When integrated with **GCash** or **Maya push notifications**, MacroDroid detect
 
 ---
 
-### 2️⃣ Deploy as a Web App
+### 2️⃣ GShareWiFi Voucher Manager Setup
 
-To publish your GShareWiFi dashboard:
+Follow these steps to launch and set up your **GShareWiFi Voucher Manager**:
 
-1. Open the **Google Apps Script Editor**.
-2. Click **Deploy → New Deployment → Web app**.
-3. Under **Execute as**, choose:  
-   `User accessing the web app`
-4. Under **Who has access**, choose:  
-   `Anyone with the link`
-5. Click **Deploy** and copy the generated Web App URL.  
+1. **Register your ShareWiFi Gmail account**  
+   👉 [Click here to register](https://script.google.com/macros/s/AKfycbxbZAgrLUMo-Kqf0u3X1i9rKDqmiTUr6xZ9ArZmSEV2jpPpRHscSxsSBY3MrxxY36Gy/exec)
+
+2. **Wait for approval**  
+   You’ll receive an email once your account has been approved.
+
+3. **Open your dashboard link**  
+   The approval email includes your personal **GShareWiFi Voucher Manager** link.
+
+4. **Complete the setup form**  
+   Enter the following details:
+   - Your **rShareWiFi Gmail**
+   - Your **WiFi Business Name**
+   - Your **Voucher Amounts** (e.g., 5, 10, 20)
+   - Your **Webhook URL** (from MacroDroid)
+
+5. **Click “🚀 Run Setup”**  
+   This will automatically create a MacroDroid macro that handles your WiFi voucher automation.
+
+---
+
+✅ **Tip:**  
+After setup, you can return to this dashboard anytime to **view, sync, or clear vouchers**.
+
 
 This URL is your **GShareWiFi Dashboard**, where you can configure your business setup and manage vouchers.
 
