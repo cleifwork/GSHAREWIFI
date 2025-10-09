@@ -17,7 +17,7 @@ Once set up, GShareWiFi can:
 When integrated with **GCash** or **Maya push notifications**, MacroDroid detects incoming payments and triggers the webhook — automatically issuing a matching WiFi voucher via SMS based on the amount sent.
 
 💡 **Example:**  
-A ₱10 GCash payment → triggers the webhook → sends back a ₱10 WiFi voucher SMS automatically.
+A ₱10 GCash payment → triggers the push notification → sends back a ₱10 WiFi voucher SMS automatically.
 
 ---
 
