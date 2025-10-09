@@ -64,7 +64,7 @@ A ₱10 GCash payment → triggers the push notification → sends back a ₱10 
 
 ---
 
-### 4️⃣ Deploy as a Web App
+### 2️⃣ Deploy as a Web App
 
 To publish your GShareWiFi dashboard:
 
@@ -80,7 +80,7 @@ This URL is your **GShareWiFi Dashboard**, where you can configure your business
 
 ---
 
-### 5️⃣ Connect to MacroDroid
+### 3️⃣ Connect to MacroDroid
 
 1. From the GShareWiFi dashboard, click:  
    **⬇️ Download Macro (Webhook URL Identifier)**  
