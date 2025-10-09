@@ -32,7 +32,7 @@ A ₱10 GCash payment → triggers the push notification → sends back a ₱10 
 | 💳 **Payment Automation** | Works with GCash or Maya push notifications to issue vouchers automatically. |
 | 🔄 **Sync & Maintenance** | “Force Update” option to rebuild or fix missing files. |
 | 📱 **Responsive UI** | Optimized for both desktop and mobile GAS interfaces. |
-| 🧾 **User Access Control** | Access limited through registered Gmail accounts and tokens in Google Sheets. |
+| 🧾 **User Access Control** | Access limited through registered Gmail accounts. |
 
 ---
 
