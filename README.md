@@ -55,19 +55,6 @@ A ₱10 GCash payment → triggers the push notification → sends back a ₱10 
 
 ---
 
-## 🧾 Google Sheet (Access Control)
-
-The Sheet contains the `AllowedUsers` tab with these columns:
-
-| Column | Description |
-|--------|-------------|
-| Email | Authorized user Gmail address |
-| Token | Authentication token for app access |
-| Business Name | Hotspot or WiFi service name |
-| Status | Active / Inactive |
-
----
-
 ## 🔧 Setup Instructions
 
 ### 1️⃣ Prerequisites
