@@ -1,0 +1,13 @@
+# Sensitive Google Apps Script files
+GShareWiFiCode.js
+credentials.json
+appsscript.json
+
+# Clasp and build files
+.clasp.json
+node_modules/
+dist/
+build/
+
+# macOS system files
+.DS_Store
