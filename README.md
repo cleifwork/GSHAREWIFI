@@ -116,7 +116,7 @@ Once your MacroDroid automation is linked with GShareWiFi:
 4. The system automatically sends a **WiFi voucher code via SMS** to the payer’s phone number.
 
 💡 Example:  
-A ₱20 payment → triggers push notification → checks amount & phone number → sends ₱20 WiFi voucher instantly via SMS using customer's GCash number.
+A ₱20 payment → triggers push notification → checks amount & phone number → sends ₱20 WiFi voucher instantly via SMS.
 
 With this setup, your WiFi vending system runs **fully automated**, 24/7 — no manual input required.
 
