@@ -71,17 +71,9 @@ The Sheet contains the `AllowedUsers` tab with these columns:
 ## 🔧 Setup Instructions
 
 ### 1️⃣ Prerequisites
-- Google Account (Gmail, Drive access)
+- Google Account (Gmail, GDrive access)
 - MacroDroid installed on your Android phone  
 - GCash or Maya app with push notifications enabled  
-- Shared Google Drive folder (`macro_mod`) containing:
-  - `temp.macro`
-  - `action_1`
-  - `action_2`
 
 ---
 
-### 2️⃣ Clone or Deploy
-Use [clasp](https://github.com/google/clasp) to clone the Apps Script project:
-```bash
-clasp clone <YOUR_SCRIPT_ID>
