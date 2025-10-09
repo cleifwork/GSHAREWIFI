@@ -116,7 +116,7 @@ With this setup, your WiFi vending system runs **fully automated**, 24/7 — no 
 
 ## 🖼️ UI Preview
 
-![GShareWiFi Dashboard Screenshot](https://raw.githubusercontent.com/cleifwork/GSHAREWIFI/gsharewifi-img-assets-1/gsharewifi_logo.png)
+![GShareWiFi Dashboard Screenshot](https://raw.githubusercontent.com/cleifwork/GSHAREWIFI/gsharewifi-img-assets-1/GShareWiFiUI.png)
 
 ---
 
