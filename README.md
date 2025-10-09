@@ -108,7 +108,7 @@ Once complete, MacroDroid will automatically communicate with your GShareWiFi sy
 
 ## 📲 How It Works with GCash / Maya
 
-Once your MacroDroid automation is linked with GShareWiFi:
+Once your MacroDroid automation is linked with GShareWiFi System:
 
 1. A customer sends a payment via **GCash** or **Maya**.
 2. **MacroDroid detects the push notification** (e.g., “You received ₱10 from...”).
