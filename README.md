@@ -103,7 +103,7 @@ After setup, you can return to your dashboard anytime to **view, sync, or clear 
    Your **Webhook URL** will pop up.
 5. **Copy** the Webhook URL and **paste it** into the **Webhook URL** field in your GShareWiFi dashboard form.
 
-Once complete, MacroDroid will automatically communicate with your GShareWiFi system to issue vouchers whenever payments are detected.
+Once setup is complete, MacroDroid automatically communicates with your GShareWiFi system to update voucher files whenever new vouchers or payments are detected.
 
 ---
 
