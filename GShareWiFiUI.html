@@ -399,10 +399,6 @@
           padding: 10px;
         }
 
-        .setup-section {
-          padding: 15px;
-        }
-
         /* Stack buttons vertically in setup section */
         .setup-section button {
           width: 100%;
@@ -569,7 +565,7 @@
     <div id="status"></div>
 
     <div class="container">
-      <h1 id="appTitle">GShareWiFi Voucher Manager</h1>
+      <h1 id="appTitle">GShareWiFi <br>Voucher Automation Manager</h1>
 
       <!-- Setup Section -->
       <div class="setup-section">
@@ -913,16 +909,21 @@
 
             google.script.run
               .withSuccessHandler(response => {
-                // Show success/failure first
-                hideLoader(
-                  response,
-                  response.toLowerCase().startsWith('error') ? 'error' : 'success'
-                );
-                // Then reload files immediately
-                loadVoucherFiles();
+                const isError = response.toLowerCase().startsWith('error');
+                hideLoader(response, isError ? 'error' : 'success');
+
+                // ✅ Show persistent message below table
+                displayStatus(response, isError ? 'error' : 'success', true);
+
+                // Reload voucher file list after short delay for visual feedback
+                setTimeout(() => {
+                  showLoader('Refreshing file list...');
+                  loadVoucherFiles();
+                }, 800);
               })
               .withFailureHandler(error => {
                 hideLoader('Error clearing file ' + fileName + ': ' + error.message, 'error');
+                displayStatus('Error clearing ' + fileName + ': ' + error.message, 'error', true);
               })
               .clearSpecificVoucherFile(fileName);
           } catch {
@@ -939,14 +940,21 @@
 
             google.script.run
               .withSuccessHandler(response => {
-                hideLoader(
-                  response,
-                  response.toLowerCase().startsWith('error') ? 'error' : 'success'
-                );
-                loadVoucherFiles();
+                const isError = response.toLowerCase().startsWith('error');
+                hideLoader(response, isError ? 'error' : 'success');
+
+                // ✅ Show message below table
+                displayStatus(response, isError ? 'error' : 'success', true);
+
+                // Reload after a short delay
+                setTimeout(() => {
+                  showLoader('Refreshing file list...');
+                  loadVoucherFiles();
+                }, 800);
               })
               .withFailureHandler(error => {
                 hideLoader('Error clearing all files: ' + error.message, 'error');
+                displayStatus('Error clearing all files: ' + error.message, 'error', true);
               })
               .clearAllVoucherFiles();
           } catch {
@@ -1039,7 +1047,9 @@
                   google.script.run.withSuccessHandler(data => {
                     globalBusinessName = data.businessName || ''; 
                     document.getElementById("businessName").value = data.businessName;
-                    document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+                    //document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+                    document.getElementById("appTitle").innerHTML = 
+                      `${data.businessName}<br>Voucher Automation Manager`;
                     loadVoucherFiles();
                     checkSetupFields();
                   }).getInitialData();
@@ -1085,7 +1095,9 @@
             if (data.email) document.getElementById('gmail').value = data.email;
             if (data.businessName) {
               document.getElementById("businessName").value = data.businessName;
-              document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+              //document.getElementById("appTitle").textContent = data.businessName + " Voucher Manager";
+              document.getElementById("appTitle").innerHTML = 
+                `${data.businessName}<br>Voucher Automation Manager`;
             }
             if (data.webhookUrl) document.getElementById("webhookUrl").value = data.webhookUrl; 
             if (data.amounts) document.getElementById("amounts").value = data.amounts;
